@@ -1,5 +1,8 @@
 const $commentsList = document.querySelector('#commentsList');
 
+const $commentForm = document.querySelector('#commentInputContainer');
+const $commentInput = document.querySelector('#commentInput');
+
 const commentItemTemplate = (newComment) => {
     return `
     <li class="commentItem">
@@ -31,3 +34,17 @@ const newComment = commentItemTemplate('안녕하세요. 반갑습니다.');
 // console.log(newComment);
 
 $commentsList.insertAdjacentHTML('afterbegin', newComment);
+
+$commentForm.addEventListener('submit', handleSubmit);
+
+function handleSubmit(event) {
+    event.preventDefault();
+    const newComment = $commentInput.value;
+
+    if(!newComment) { // 입력창이 비어있는 경우 아무런 일도 일어나지 않도록
+        return
+    };
+    const newCommentItem = commentItemTemplate(newComment);
+    $commentsList.insertAdjacentHTML('afterbegin', newCommentItem);
+    $commentInput.value = '';
+}
