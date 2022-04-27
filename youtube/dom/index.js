@@ -37,6 +37,24 @@ $commentsList.insertAdjacentHTML('afterbegin', newComment);
 
 $commentForm.addEventListener('submit', handleSubmit);
 
+const comments = [];
+
+function saveItem() {
+    localStorage.setItem("comments", JSON.stringify(comments));
+}
+
+function displayHistory() {
+    const savedComments = JSON.parse(localStorage.getItem('comments'));
+    
+    savedComments.map(comment => {
+        const newCommentItem = commentItemTemplate(comment);
+        comments.push(comment);
+        $commentsList.insertAdjacentHTML('afterbegin', newCommentItem);
+    })
+}
+
+displayHistory();
+
 function handleSubmit(event) {
     event.preventDefault();
     const newComment = $commentInput.value;
@@ -47,4 +65,9 @@ function handleSubmit(event) {
     const newCommentItem = commentItemTemplate(newComment);
     $commentsList.insertAdjacentHTML('afterbegin', newCommentItem);
     $commentInput.value = '';
+
+    comments.push(newComment);
+    // console.log(comments);
+
+    saveItem();
 }
